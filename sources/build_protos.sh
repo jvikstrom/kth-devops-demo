@@ -1,2 +1,2 @@
 #!/bin/bash
-protoc proto/hello.proto --go_out=grpc:.
+protoc --go_out=plugins=grpc:. proto/*.proto

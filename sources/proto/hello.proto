@@ -5,6 +5,8 @@ syntax = "proto3";
 
 package hello;
 
+option go_package = "/proto"; // A bit of a hack to get protoc to generate the pb.go in this folder.
+
 service HelloService {
     rpc sayHello(SayHelloRequest) returns (SayHelloResponse) {}
 }
