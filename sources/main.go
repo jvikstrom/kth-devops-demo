@@ -1,6 +1,9 @@
 package main
 
-import "flag"
+import (
+	"flag"
+	"log"
+)
 
 // A very simple go program implementing the hello protobuf.
 // It can act as both a server and a client.
@@ -13,6 +16,7 @@ func main() {
 	if serverURL == nil || len(*serverURL) == 0 {
 		StartServer()
 	} else {
-		StartClient()
+		StartClient(*serverURL)
 	}
+	log.Printf("Done!")
 }

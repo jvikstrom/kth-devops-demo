@@ -25,6 +25,8 @@ func StartServer() {
 type helloServer struct {
 }
 
+// SayHello is a handler for the sayHello rpc in the Hello service.
+// Just calculates req.Start primes in an inefficient way to use CPU.
 func (h helloServer) SayHello(ctx context.Context, req *proto.SayHelloRequest) (res *proto.SayHelloResponse, err error) {
 	// Let's just calculate req.Start number of primes in N^2.
 	primeList := []int{}
