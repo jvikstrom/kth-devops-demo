@@ -12,4 +12,6 @@ All resources required for the demo.
 
 ## Prometheus
 
-To get a nice CPU rate visualization of the "hello-server" pods, run: `rate(container_cpu_usage_seconds_total{container="hello-server-pod"}[5m])`.
+To get a nice CPU rate visualization of the "hello-server" pods, run this query: `rate(container_cpu_usage_seconds_total{container="hello-server-pod"}[5m])`.
+
+## Running
