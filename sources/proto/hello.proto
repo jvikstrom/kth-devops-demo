@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+// A very simple protobuf with only one rpc.
+// We only want to keep the server busy so the contents are not really important.
+
+package hello;
+
+service HelloService {
+    rpc sayHello(SayHelloRequest) returns (SayHelloResponse) {}
+}
+
+message SayHelloRequest {
+    int64 start = 1;
+}
+
+message SayHelloResponse {
+    int64 end = 1;
+}
