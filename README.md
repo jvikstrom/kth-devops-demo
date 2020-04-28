@@ -15,3 +15,10 @@ All resources required for the demo.
 To get a nice CPU rate visualization of the "hello-server" pods, run this query: `rate(container_cpu_usage_seconds_total{container="hello-server-pod"}[5m])`.
 
 ## Running
+
+* Start minikube.
+* Run `./deploy.sh` this will deploy the client and server.
+* Run `./connect-prometheus.sh` to connect to the prometheus server.
+
+....
+TODO: Add more instructions for adding linkerd as a side-car to the service.
