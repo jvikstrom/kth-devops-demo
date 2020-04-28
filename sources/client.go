@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
-	"sync"
 	"sync/atomic"
 	"time"
 
@@ -28,9 +27,9 @@ const maxFails = 10
 
 func runClient(url string) error {
 	// Connect to our server.
-	conn, err := grpc.Dial(url)
+	conn, err := grpc.Dial(url, grpc.WithInsecure())
 	if err != nil {
-
+		return err
 	}
 	defer conn.Close()
 	client := proto.NewHelloServiceClient(conn)
@@ -42,14 +41,13 @@ func runClient(url string) error {
 	go func() {
 		// Handles failed requests.
 		for {
-			var fail bool
-			fail <-failChan
-			nfailed += 1
+			<-failChan
+			nfailed++
 			if nfailed > maxFails {
 				atomic.StoreInt32(&shouldQuit, 1)
 			}
 		}
-	}
+	}()
 
 	startTime := time.Now()
 	// Send first batch of requests.
@@ -60,9 +58,9 @@ func runClient(url string) error {
 	// Resend requests forever.
 	for {
 		<-doneChan // Wait for a request to notify us it's done.
-		if atomic.LoadInt32(&shouldQuit) == 1{
+		if atomic.LoadInt32(&shouldQuit) == 1 {
 			totalTimeMs := time.Now().Sub(startTime).Milliseconds()
-			return fmt.Errorf("Too many requests have failed, ran for %v ms, exiting...", totalTimeMs)
+			return fmt.Errorf("Too many requests have failed, ran for %v ms, exiting", totalTimeMs)
 		}
 		sendRequestAsync(client, doneChan, failChan) // Send new request to make sure we saturate the number of outstanding requests.
 	}
@@ -81,8 +79,10 @@ func sendRequestAsync(client proto.HelloServiceClient, doneChan chan struct{}, f
 }
 
 func sendRequest(client proto.HelloServiceClient) error {
-	n := rand.Int63() % 1000                                                 // Get random number in range [0,1000).
-	ctx, cancel := context.WithDeadline(context.Background(), time.Second*5) // Have a 5 second timeout for each request
-	_, err := client.SayHello(ctx, &proto.SayHelloRequest{Start: n})
+	n := rand.Int63() % 1000                                                               // Get random number in range [0,1000).
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second)) // Have a 5 second timeout for each request
+	req := &proto.SayHelloRequest{Start: n}
+	_, err := client.SayHello(ctx, req)
+	cancel()
 	return err
 }

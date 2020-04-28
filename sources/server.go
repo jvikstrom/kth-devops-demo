@@ -11,12 +11,13 @@ import (
 
 func StartServer() {
 	hello := helloServer{}
-	lis, err := net.Listen("tcp", ":8080")
+	lis, err := net.Listen("tcp", ":55555")
 	if err != nil {
 		log.Fatalf("Error listening: %v", err)
 	}
 	grpcServer := grpc.NewServer()
 	proto.RegisterHelloServiceServer(grpcServer, hello)
+	log.Printf("Server listening at: :55555")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("Error running GRPC server: %v", err)
 	}
