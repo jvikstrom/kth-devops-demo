@@ -56,6 +56,8 @@ func runClient(url string) error {
 	}
 
 	// Resend requests forever.
+	sinceLast := time.Now()
+	tot := 0
 	for {
 		<-doneChan // Wait for a request to notify us it's done.
 		if atomic.LoadInt32(&shouldQuit) == 1 {
@@ -63,6 +65,11 @@ func runClient(url string) error {
 			return fmt.Errorf("Too many requests have failed, ran for %v ms, exiting", totalTimeMs)
 		}
 		sendRequestAsync(client, doneChan, failChan) // Send new request to make sure we saturate the number of outstanding requests.
+		tot++
+		if tot%100 == 0 {
+			log.Printf("Sent: 100 messages the last: %v ms", time.Now().Sub(sinceLast).Milliseconds())
+			sinceLast = time.Now()
+		}
 	}
 
 }

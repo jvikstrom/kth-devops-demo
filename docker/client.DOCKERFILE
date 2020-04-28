@@ -21,4 +21,4 @@ RUN go build
 FROM golang:alpine
 
 COPY --from=builder /go/src/github.com/jvikstrom/devops-demo/sources/sources /go/bin/client
-CMD /go/bin/client -server=hello-server
+CMD /go/bin/client -server=hello-server:55555

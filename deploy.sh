@@ -8,3 +8,4 @@
 cd k8s
 ./deploy.sh
 cd ..
+
