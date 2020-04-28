@@ -10,3 +10,6 @@ All resources required for the demo.
 * Golang with minimum version 1.12
 * Docker
 
+## Prometheus
+
+To get a nice CPU rate visualization of the "hello-server" pods, run: `rate(container_cpu_usage_seconds_total{container="hello-server-pod"}[5m])`.
