@@ -16,12 +16,10 @@ To get a nice CPU rate visualization of the "hello-server" pods, run this query:
 
 ## Running
 
-* Start minikube.
+* Start minikube (note, you might need to kill any prometheus pods left-over since before)
 * Run `./deploy.sh` this will deploy the client and server.
 * Run `./connect-prometheus.sh` to connect to the prometheus server.
 
-....
-TODO: Add more instructions for adding linkerd as a side-car to the service.
 ## Screencast steps
 * Show the load imbalance between the pods using prometheus.
 * Install the linkerd CLI using: `curl -sL https://run.linkerd.io/install | sh`.
@@ -33,5 +31,9 @@ TODO: Add more instructions for adding linkerd as a side-car to the service.
 * (show what deployments are deployed using `kubectl -n linkerd get deploy`)
 * Show the linkerd dashboard using: `linkerd dashboard &`
 * Check traffic we're generating using: `linkerd -n linkerd top deploy/linkerd-web`
-* Inject linkerd into our deployment using:
+* Inject linkerd into our deployment using: `kubectl get deploy hello-server -o yaml \ 
+  | linkerd inject - \
+  | kubectl apply -f -`.
+* We are done! Show The prometheus dashboard with new configs.
+
 

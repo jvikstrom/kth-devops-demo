@@ -20,7 +20,7 @@ func StartClient(url string) {
 }
 
 // Maximum number of requests a client can have that have not been responded to.
-const maxOutstanding = 20
+const maxOutstanding = 50
 
 // Maximum number of requests we permit fail before we terminate the client.
 const maxFails = 10
@@ -86,7 +86,7 @@ func sendRequestAsync(client proto.HelloServiceClient, doneChan chan struct{}, f
 }
 
 func sendRequest(client proto.HelloServiceClient) error {
-	n := rand.Int63() % 1000                                                               // Get random number in range [0,1000).
+	n := 1000+(rand.Int63() % 5000)                                                        // Get random number in range [0,1000).
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(5*time.Second)) // Have a 5 second timeout for each request
 	req := &proto.SayHelloRequest{Start: n}
 	_, err := client.SayHello(ctx, req)
