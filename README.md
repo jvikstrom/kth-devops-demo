@@ -30,13 +30,11 @@ The screencast can be found [here](https://www.youtube.com/watch?v=UXS62qZ-0F4).
 * Verify linkerd is installed using: `linkerd version`
 * Check and make sure kubernetes is configured correctly for linkerd: `linkerd check --pre`
 * Install the linkerd control plane into the cluster: `linkerd install | kubectl apply -f -` (may take a while depending on internet connection speeds)
-* Validate the installation using: `linkerd check`
+* You can optionaly validate the deployment using: `linkerd check`
 * (show what deployments are deployed using `kubectl -n linkerd get deploy`)
 * Show the linkerd dashboard using: `linkerd dashboard &`
 * Check traffic we're generating using: `linkerd -n linkerd top deploy/linkerd-web`
-* Inject linkerd into our deployment using: `kubectl get deploy hello-client -o yaml \ 
-  | linkerd inject - \
-  | kubectl apply -f -`.
+* Inject linkerd into our deployment using: `kubectl get deploy hello-client -o yaml | linkerd inject - | kubectl apply -f -`.
 * We are done! Linkerd should now be load balancing our requests, you can check that this is the case by looking at the Linkerd dashboard or in prometheus.
 
 
